@@ -1,20 +1,25 @@
-# fastws-example
 
-a example for websocket via
+# flatbuffers 在 websocket 中互通的示例
+
+
+## 0. 简要说明
+为某个开源项目增加 websocket 对接, 写了这个示例
+
+代码中 javascript 对 flatbuffers 的序列化/反序列化, 查了一天资料, 嗯哼, 最终完成了.
+看代码吧.........
+
+
+## 1. 使用代码库
+
+示例代码使用了以下开源库
 * [fasthttp](http://github.com/valyala/fasthttp) 
 * [fasthttp router](https://github.com/fasthttp/router) 
-*  [fastws ](https://github.com/fasthttp/fastws) -- -- Websocket implementation for fasthttp
-*   [flatbuffers](https://github.com/google/flatbuffers) -- serialized / un-surialized for  go and javascript  
-*   [websockets/ws](https://github.com/websockets/ws) -- javascript websocket client 
+*  [fastws ](https://github.com/fasthttp/fastws) ----  fasthttp 实现的 websocket 库
+*   [flatbuffers](https://github.com/google/flatbuffers) ---- flatbuffers 高效反序列化通用库, 用在 go语言/javascript 
+*   [websockets/ws](https://github.com/websockets/ws) ---- javascript websocket 通用库
 
-------------
-
-[chinese README / 中文说明](./README-cn.md)
-
-
-
-## 1. flatbuffers  IDL example 
-xone.fbs and JS example from [https://www.cnblogs.com/sevenstar/p/FlatBuffer.html](https://www.cnblogs.com/sevenstar/p/FlatBuffer.html), thanks
+## 1. flatbuffers  IDL 示例 
+xone.fbs 示例来自 [https://www.cnblogs.com/sevenstar/p/FlatBuffer.html](https://www.cnblogs.com/sevenstar/p/FlatBuffer.html), 感谢!!
 
 ```
 namespace xone.genflat;
@@ -36,9 +41,9 @@ namespace xone.genflat;
  //root_type LoginRespons
 ```
 
-## 2. flatc
+## 2. flatc 编译代码
 
-generate javascript
+生成 javascript
 
 ```
 flatc -s --gen-mutable ./*.fbs
@@ -46,13 +51,13 @@ flatc -s --gen-mutable ./*.fbs
 
 
 
-generate golang
+生成 golang
 
 ```
 flatc  --go --gen-object-api --gen-all  --gen-compare  --raw-binary ./*.fbs
 ```
 
-## 3. some code explain
+## 3. 主要代码说明
 
 ```
 ./cmd/wsserver/main.go ----- websocket server 
@@ -64,7 +69,9 @@ flatc  --go --gen-object-api --gen-all  --gen-compare  --raw-binary ./*.fbs
 
 
 
-## 4. javascript
+## 4. javascript 序列化/反序列化
+
+**请注意代码注释中的--------- 特别注意这一行**
 
 ```
 // ------------ ./jsclient/index.js
@@ -86,14 +93,14 @@ let req = xone.genflat.LoginRequest.endLoginRequest(b);
 b.finish(req); //创建结束时记得调用这个finish方法。
 
 
-let uint8Array = b.asUint8Array();
+let uint8Array = b.asUint8Array();   // ------------- 特别注意这一行
 
 console.log(uint8Array);
 // console.log(b.dataBuffer() );
 //-------------------------------------------
 //  un-serialized
 //-------------------------------------------
-let bb = new flatbuffers.ByteBuffer(uint8Array);
+let bb = new flatbuffers.ByteBuffer(uint8Array);  //-------------- 特别注意这一行
 let lgg = xone.genflat.LoginRequest.getRootAsLoginRequest(bb);
 
 
@@ -105,7 +112,7 @@ console.log("msgID: ", lgg.msgID());
 
 
 
-## 5.  flatbuffers serialized / un-serialized in golang 
+## 5.  golang 中对 flatbuffers 的序列化/反序列化
 
 ```
 
@@ -147,7 +154,7 @@ func TestLoginRequestT_Byte(t *testing.T) {
 
 ```
 
-## 6. websocket Code 
+## 6. websocket 代码
 ```
 
 ws.onmessage = (event) => {
@@ -206,7 +213,7 @@ function str2ab(str) {
 
 
 
-## 6. refence
+## 6. 参考
 
 *  [https://github.com/google/flatbuffers/issues/3781](https://github.com/google/flatbuffers/issues/3781)
 
@@ -218,3 +225,5 @@ MIT
 code  by [tsingson](https://tsingson.github.io)
 
 ![tsingson-logo](README.assets/tsingson-logo.png)
+
+
