@@ -37,6 +37,9 @@ ws.onclose = (event) => {
 };
 
 ws.onmessage = (event) => {
+    //-------------------------------------------------------------------
+    //   read from websocket and un-serialized via flatbuffers
+    //--------------------------------------------------------------------
     let aa = str2ab(event.data);
     let bb = new flatbuffers.ByteBuffer(aa);
     let lgg = xone.genflat.LoginRequest.getRootAsLoginRequest(bb);
@@ -57,6 +60,9 @@ ws.onmessage = (event) => {
     // console.log(`Roundtrip time: ${Date.now() }` , ab2str(d ));
 
     setTimeout(function timeout() {
+    //-------------------------------------------------------------------
+    //   serialized via flatbuffers and send to websocket
+    //--------------------------------------------------------------------
         let b = new flatbuffers.Builder(1);
         let username = b.createString("zlssssssssssssh");
         let password = b.createString("xxxxxxxxxxxxxxxxxxx");

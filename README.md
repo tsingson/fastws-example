@@ -7,7 +7,7 @@ a example for websocket via
 *   [flatbuffers](https://github.com/google/flatbuffers) -- serialized / un-surialized for  go and javascript  
 *   [websockets/ws](https://github.com/websockets/ws) -- javascript websocket client 
 
-## 1. example IDL 
+## 1. flatbuffers  IDL example 
 xone.fbs and JS example from [https://www.cnblogs.com/sevenstar/p/FlatBuffer.html](https://www.cnblogs.com/sevenstar/p/FlatBuffer.html), thanks
 
 ```
@@ -46,9 +46,19 @@ generate golang
 flatc  --go --gen-object-api --gen-all  --gen-compare  --raw-binary ./*.fbs
 ```
 
+## 3. some code explain
+
+```
+./cmd/wsserver/main.go ----- websocket server 
+./cmd/wsclient/main.go ----- websocket client
+./ws/... -------------------  websocket go code for websocket handler and websocket client 
+./jsclient/ws.js  ---------- javascript client code , please check-out package.json for depends
+```
 
 
-## 3. javascript
+
+
+## 4. javascript
 
 ```
 // ------------ ./jsclient/index.js
@@ -89,8 +99,7 @@ console.log("msgID: ", lgg.msgID());
 
 
 
-
-## 4. golang 
+## 5.  flatbuffers serialized / un-serialized in golang 
 
 ```
 
@@ -132,13 +141,61 @@ func TestLoginRequestT_Byte(t *testing.T) {
 
 ```
 
-## 5. Code example
-
+## 6. websocket Code 
 ```
-./cmd/wsserver/main.go ----- websocket server 
-./cmd/wsclient/main.go ----- websocket client
-./ws/... -------------------  websocket go code for websocket handler and websocket client 
-./jsclient/ws.js  ---------- javascript client code , please check-out package.json for depends
+
+ws.onmessage = (event) => {
+    //-------------------------------------------------------------------
+    //   read from websocket and un-serialized via flatbuffers
+    //--------------------------------------------------------------------
+    let aa = str2ab(event.data);
+    let bb = new flatbuffers.ByteBuffer(aa);
+    let lgg = xone.genflat.LoginRequest.getRootAsLoginRequest(bb);
+    let pw = lgg.password();
+
+    if (typeof pw === 'string') {
+        console.log("----------------------------------------------");
+
+        console.log("username: ", lgg.username());
+        console.log("password", lgg.password());
+        console.log("msgID: ", lgg.msgID());
+    } else {
+        console.log("=================================");
+        console.log(event.data);
+    }
+
+
+    // console.log(`Roundtrip time: ${Date.now() }` , ab2str(d ));
+
+    setTimeout(function timeout() {
+    //-------------------------------------------------------------------
+    //   serialized via flatbuffers and send to websocket 
+    //--------------------------------------------------------------------
+        let b = new flatbuffers.Builder(1);
+        let username = b.createString("zlssssssssssssh");
+        let password = b.createString("xxxxxxxxxxxxxxxxxxx");
+        xone.genflat.LoginRequest.startLoginRequest(b);
+        xone.genflat.LoginRequest.addUsername(b, username);
+        xone.genflat.LoginRequest.addPassword(b, password);
+        xone.genflat.LoginRequest.addMsgID(b, 5);
+        let req = xone.genflat.LoginRequest.endLoginRequest(b);
+        b.finish(req); //创建结束时记得调用这个finish方法。
+
+
+        let uint8Array = b.asUint8Array();
+
+        ws.send(uint8Array);
+    }, 500);
+};
+
+function str2ab(str) {
+    let array = new Uint8Array(str.length);
+    for (let i = 0; i < str.length; i++) {
+        array[i] = str.charCodeAt(i);
+    }
+    return array
+}
+
 ```
 
 
@@ -147,7 +204,7 @@ func TestLoginRequestT_Byte(t *testing.T) {
 
 *  [https://github.com/google/flatbuffers/issues/3781](https://github.com/google/flatbuffers/issues/3781)
 
-## 7. License
+## 8. License
 MIT
 
 -----
