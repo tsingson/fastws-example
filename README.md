@@ -1,4 +1,4 @@
-# fastws-example
+# fasthttp-websocket-example via flatbuffers ( in go / javascript)
 
 a example for websocket via
 * [fasthttp](http://github.com/valyala/fasthttp) 
