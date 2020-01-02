@@ -1,5 +1,9 @@
 package genflat
 
+import (
+	flatbuffers "github.com/google/flatbuffers/go"
+)
+
 func (a *LoginRequestT) Byte() []byte {
 	b := flatbuffers.NewBuilder(0)
 	b.Finish(LoginRequestPack(b, a))
