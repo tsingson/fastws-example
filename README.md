@@ -14,7 +14,7 @@ a example for websocket via
 
 
 ## 1. flatbuffers  IDL example 
-xone.fbs and JS example from [https://www.cnblogs.com/sevenstar/p/FlatBuffer.html](https://www.cnblogs.com/sevenstar/p/FlatBuffer.html), thanks
+xone.fbs  example from [https://www.cnblogs.com/sevenstar/p/FlatBuffer.html](https://www.cnblogs.com/sevenstar/p/FlatBuffer.html), thanks
 
 ```
 namespace xone.genflat;
