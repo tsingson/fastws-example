@@ -1,4 +1,4 @@
-# wfastws-example
+# fastws-example
 
 a example for websocket via
 * [fasthttp](http://github.com/valyala/fasthttp) 
@@ -146,3 +146,12 @@ func TestLoginRequestT_Byte(t *testing.T) {
 ## 6. refence
 
 *  [https://github.com/google/flatbuffers/issues/3781](https://github.com/google/flatbuffers/issues/3781)
+
+## 7. License
+MIT
+
+-----
+
+code  by [tsingson](https://tsingson.github.io)
+
+![tsingson-logo](README.assets/tsingson-logo.png)
