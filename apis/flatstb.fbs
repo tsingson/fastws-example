@@ -1,0 +1,15 @@
+namespace flatws;
+
+attribute "priority";
+
+/// AccessResult  result
+table AccessResult {
+   me:AccessProfile;
+   Token:string;
+}
+/// AccessProfile access
+table AccessProfile {
+    UserID:string;
+    RegisterDate:string;
+    Expiration:string;
+}

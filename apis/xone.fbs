@@ -1,0 +1,17 @@
+namespace xone.genflat;
+
+  table LoginRequest{
+  msgID:int=1;
+  username:string;
+  password:string;
+  }
+
+  table LoginResponse{
+ msgID:int=2;
+ uid:string;
+ }
+
+ //root_type非必须。
+
+ //root_type LoginRequest;
+ //root_type LoginRespons
