@@ -19,7 +19,7 @@ func main() {
 	path, _ := vtils.GetCurrentExecDir()
 	path = path + "/www"
 	r.ServeFiles("/www/*filepath", path)
-	r.GET("/ws", fastws.Upgrade(ws.WsHandler))
+	r.GET("/ws", fastws.UpgradeMode(ws.WsHandler, fastws.ModeBinary))
 
 	server := fasthttp.Server{
 		Handler: r.Handler,
