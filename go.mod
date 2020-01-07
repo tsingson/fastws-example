@@ -10,7 +10,7 @@ require (
 	github.com/klauspost/compress v1.9.7 // indirect
 	github.com/stretchr/testify v1.4.0
 	github.com/tsingson/chardet v0.0.0-20180515175526-60fc302f5592
-	github.com/tsingson/fastws v0.2.0
+	github.com/tsingson/fastws v0.0.1
 	github.com/valyala/fasthttp v1.7.1
 	go.uber.org/zap v1.13.0
 	golang.org/x/text v0.3.2
