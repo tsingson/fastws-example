@@ -40,29 +40,49 @@ ws.onmessage = (event) => {
     //-------------------------------------------------------------------
     //   read from websocket and un-serialized via flatbuffers
     //--------------------------------------------------------------------
-    let aa = str2ab(event.data);
-    let bb = new flatbuffers.ByteBuffer(aa);
-    let lgg = xone.genflat.LoginRequest.getRootAsLoginRequest(bb);
-    let pw = lgg.password();
+    if (typeof event.data === 'string') {
+        let aa = str2ab(event.data);
 
-    if (typeof pw === 'string') {
-        console.log("----------------------------------------------");
+        let bb = new flatbuffers.ByteBuffer(aa);
+        let lgg = xone.genflat.LoginRequest.getRootAsLoginRequest(bb);
+        let pw = lgg.password();
 
-        console.log("username: ", lgg.username());
-        console.log("password", lgg.password());
-        console.log("msgID: ", lgg.msgID());
+        if (typeof pw === 'string') {
+            console.log("----------------------------------------------");
+
+            console.log("username: ", lgg.username());
+            console.log("password", lgg.password());
+            console.log("msgID: ", lgg.msgID());
+        } else {
+            console.log("=================================");
+            console.log(event.data);
+        }
     } else {
-        console.log("=================================");
-        console.log(event.data);
-    }
+        console.log("============" + typeof event.data);
 
+        let aa = new Uint8Array(event.data);
+        let cc = new flatbuffers.ByteBuffer(aa);
+        let lgg = xone.genflat.LoginRequest.getRootAsLoginRequest(cc);
+        let pw = lgg.password();
+
+        if (typeof pw === 'string') {
+            console.log("----------------------------------------------");
+
+            console.log("username: ", lgg.username());
+            console.log("password", lgg.password());
+            console.log("msgID: ", lgg.msgID());
+        } else {
+            console.log("=================================");
+            console.log(event.data);
+        }
+    }
 
     // console.log(`Roundtrip time: ${Date.now() }` , ab2str(d ));
 
     setTimeout(function timeout() {
-    //-------------------------------------------------------------------
-    //   serialized via flatbuffers and send to websocket
-    //--------------------------------------------------------------------
+        //-------------------------------------------------------------------
+        //   serialized via flatbuffers and send to websocket
+        //--------------------------------------------------------------------
         let b = new flatbuffers.Builder(1);
         let username = b.createString("zlssssssssssssh");
         let password = b.createString("xxxxxxxxxxxxxxxxxxx");
