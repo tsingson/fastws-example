@@ -12,7 +12,7 @@ type LoginRequestT struct {
 	Password string
 }
 
-func LoginRequestPack(builder *flatbuffers.Builder, t *LoginRequestT) flatbuffers.UOffsetT {
+func (t *LoginRequestT) Pack(builder *flatbuffers.Builder) flatbuffers.UOffsetT {
 	if t == nil {
 		return 0
 	}
@@ -23,6 +23,22 @@ func LoginRequestPack(builder *flatbuffers.Builder, t *LoginRequestT) flatbuffer
 	LoginRequestAddUsername(builder, usernameOffset)
 	LoginRequestAddPassword(builder, passwordOffset)
 	return LoginRequestEnd(builder)
+}
+
+func (rcv *LoginRequestT) Builder() *flatbuffers.Builder {
+	b := flatbuffers.NewBuilder(0)
+	b.Finish(rcv.Pack(b))
+	return b
+}
+
+func (rcv *LoginRequestT) Marshal() []byte {
+	b := flatbuffers.NewBuilder(0)
+	b.Finish(rcv.Pack(b))
+	return b.FinishedBytes()
+}
+
+func UnmarshalLoginRequestT(b []byte) *LoginRequestT {
+	return GetRootAsLoginRequest(b, 0).UnPack()
 }
 
 func (rcv *LoginRequest) UnPackTo(t *LoginRequestT) {

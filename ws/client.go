@@ -5,9 +5,8 @@ import (
 	"log"
 
 	"github.com/tsingson/fastws"
+	"github.com/tsingson/fastws-example/apis/xone/genflat"
 	"github.com/valyala/fasthttp"
-
-	"github.com/tsingson/fastws-example/apis/genflat"
 )
 
 func StartClient(urlws, urlset string) error {
@@ -49,7 +48,7 @@ func StartClient(urlws, urlset string) error {
 				continue
 			}
 
-			l := genflat.ByteLoginRequestT(msg)
+			l := genflat.UnmarshalLoginRequestT(msg)
 			if l.MsgID > 0 {
 				fmt.Println("mod > ", mod, " id > ", l.MsgID, " u > ", l.Username, " pw > ", l.Password)
 			}
@@ -64,7 +63,7 @@ func StartClient(urlws, urlset string) error {
 
 			count++
 
-			_, _ = c.Write(x.Byte())
+			_, _ = c.Write(x.Marshal())
 		}
 	}
 	return nil

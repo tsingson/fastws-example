@@ -13,7 +13,7 @@ type AccessProfileT struct {
 	Expiration   string
 }
 
-func AccessProfilePack(builder *flatbuffers.Builder, t *AccessProfileT) flatbuffers.UOffsetT {
+func (t *AccessProfileT) Pack(builder *flatbuffers.Builder) flatbuffers.UOffsetT {
 	if t == nil {
 		return 0
 	}
@@ -25,6 +25,22 @@ func AccessProfilePack(builder *flatbuffers.Builder, t *AccessProfileT) flatbuff
 	AccessProfileAddRegisterDate(builder, RegisterDateOffset)
 	AccessProfileAddExpiration(builder, ExpirationOffset)
 	return AccessProfileEnd(builder)
+}
+
+func (rcv *AccessProfileT) Builder() *flatbuffers.Builder {
+	b := flatbuffers.NewBuilder(0)
+	b.Finish(rcv.Pack(b))
+	return b
+}
+
+func (rcv *AccessProfileT) Marshal() []byte {
+	b := flatbuffers.NewBuilder(0)
+	b.Finish(rcv.Pack(b))
+	return b.FinishedBytes()
+}
+
+func UnmarshalAccessProfileT(b []byte) *AccessProfileT {
+	return GetRootAsAccessProfile(b, 0).UnPack()
 }
 
 func (rcv *AccessProfile) UnPackTo(t *AccessProfileT) {

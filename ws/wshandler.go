@@ -6,7 +6,7 @@ import (
 
 	"github.com/tsingson/fastws"
 
-	"github.com/tsingson/fastws-example/apis/genflat"
+	"github.com/tsingson/fastws-example/apis/xone/genflat"
 )
 
 func WsHandler(conn *fastws.Conn) {
@@ -18,7 +18,7 @@ func WsHandler(conn *fastws.Conn) {
 		Password: "1",
 	}
 
-	_, _ = conn.Write(l.Byte())
+	_, _ = conn.Write(l.Marshal())
 
 	var msg []byte
 	var mod fastws.Mode
@@ -32,7 +32,7 @@ func WsHandler(conn *fastws.Conn) {
 			break
 		}
 
-		l := genflat.ByteLoginRequestT(msg)
+		l := genflat.UnmarshalLoginRequestT(msg)
 		if l.MsgID > 0 {
 			fmt.Println("mod > ", mod, " id > ", l.MsgID, " u > ", l.Username, " pw > ", l.Password)
 		}

@@ -13,4 +13,4 @@ flatc -g --gen-object-api --grpc ./*.fbs
 flatc  --go --gen-object-api --gen-all  --gen-mutable --grpc  --gen-compare  --raw-binary ./*.fbs
 
 
-flatc -s --gen-mutable ./*.fbs
+flatc -s --gen-object-api --gen-mutable ./*.fbs

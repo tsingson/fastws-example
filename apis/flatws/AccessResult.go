@@ -12,16 +12,32 @@ type AccessResultT struct {
 	Token string
 }
 
-func AccessResultPack(builder *flatbuffers.Builder, t *AccessResultT) flatbuffers.UOffsetT {
+func (t *AccessResultT) Pack(builder *flatbuffers.Builder) flatbuffers.UOffsetT {
 	if t == nil {
 		return 0
 	}
-	meOffset := AccessProfilePack(builder, t.Me)
+	meOffset := t.Me.Pack(builder)
 	TokenOffset := builder.CreateString(t.Token)
 	AccessResultStart(builder)
 	AccessResultAddMe(builder, meOffset)
 	AccessResultAddToken(builder, TokenOffset)
 	return AccessResultEnd(builder)
+}
+
+func (rcv *AccessResultT) Builder() *flatbuffers.Builder {
+	b := flatbuffers.NewBuilder(0)
+	b.Finish(rcv.Pack(b))
+	return b
+}
+
+func (rcv *AccessResultT) Marshal() []byte {
+	b := flatbuffers.NewBuilder(0)
+	b.Finish(rcv.Pack(b))
+	return b.FinishedBytes()
+}
+
+func UnmarshalAccessResultT(b []byte) *AccessResultT {
+	return GetRootAsAccessResult(b, 0).UnPack()
 }
 
 func (rcv *AccessResult) UnPackTo(t *AccessResultT) {

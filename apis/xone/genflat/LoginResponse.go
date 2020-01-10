@@ -11,7 +11,7 @@ type LoginResponseT struct {
 	Uid   string
 }
 
-func LoginResponsePack(builder *flatbuffers.Builder, t *LoginResponseT) flatbuffers.UOffsetT {
+func (t *LoginResponseT) Pack(builder *flatbuffers.Builder) flatbuffers.UOffsetT {
 	if t == nil {
 		return 0
 	}
@@ -20,6 +20,22 @@ func LoginResponsePack(builder *flatbuffers.Builder, t *LoginResponseT) flatbuff
 	LoginResponseAddMsgID(builder, t.MsgID)
 	LoginResponseAddUid(builder, uidOffset)
 	return LoginResponseEnd(builder)
+}
+
+func (rcv *LoginResponseT) Builder() *flatbuffers.Builder {
+	b := flatbuffers.NewBuilder(0)
+	b.Finish(rcv.Pack(b))
+	return b
+}
+
+func (rcv *LoginResponseT) Marshal() []byte {
+	b := flatbuffers.NewBuilder(0)
+	b.Finish(rcv.Pack(b))
+	return b.FinishedBytes()
+}
+
+func UnmarshalLoginResponseT(b []byte) *LoginResponseT {
+	return GetRootAsLoginResponse(b, 0).UnPack()
 }
 
 func (rcv *LoginResponse) UnPackTo(t *LoginResponseT) {
