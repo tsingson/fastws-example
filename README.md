@@ -206,7 +206,7 @@ function str2ab(str) {
 
 
 
-## 6. refence
+## 6. un-serialized refence
 
 *  [https://github.com/google/flatbuffers/issues/3781](https://github.com/google/flatbuffers/issues/3781)
 
