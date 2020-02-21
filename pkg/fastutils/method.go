@@ -6,6 +6,8 @@ import (
 
 	"github.com/valyala/fasthttp"
 	"go.uber.org/zap"
+
+	"github.com/tsingson/fastws-example/pkg/vtils"
 )
 
 // FastDebug fast http

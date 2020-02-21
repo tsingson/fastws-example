@@ -5,8 +5,9 @@ import (
 	"log"
 
 	"github.com/tsingson/fastws"
-	"github.com/tsingson/fastws-example/apis/xone/genflat"
 	"github.com/valyala/fasthttp"
+
+	"github.com/tsingson/fastws-example/apis/xone/genflat"
 )
 
 func StartClient(urlws, urlset string) error {

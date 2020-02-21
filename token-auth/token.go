@@ -12,8 +12,10 @@ type tokenAuth struct {
 	token string
 }
 
-var defaultToken = []byte("token")
-var AuthHeader = []byte("Authorization")
+var (
+	defaultToken = []byte("token")
+	AuthHeader   = []byte("Authorization")
+)
 
 func generateToken() []byte {
 	return defaultToken

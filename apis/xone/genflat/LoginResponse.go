@@ -95,12 +95,15 @@ func (rcv *LoginResponse) Uid() []byte {
 func LoginResponseStart(builder *flatbuffers.Builder) {
 	builder.StartObject(2)
 }
+
 func LoginResponseAddMsgID(builder *flatbuffers.Builder, msgID int32) {
 	builder.PrependInt32Slot(0, msgID, 2)
 }
+
 func LoginResponseAddUid(builder *flatbuffers.Builder, uid flatbuffers.UOffsetT) {
 	builder.PrependUOffsetTSlot(1, flatbuffers.UOffsetT(uid), 0)
 }
+
 func LoginResponseEnd(builder *flatbuffers.Builder) flatbuffers.UOffsetT {
 	return builder.EndObject()
 }

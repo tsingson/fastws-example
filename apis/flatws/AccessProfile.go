@@ -105,15 +105,19 @@ func (rcv *AccessProfile) Expiration() []byte {
 func AccessProfileStart(builder *flatbuffers.Builder) {
 	builder.StartObject(3)
 }
+
 func AccessProfileAddUserID(builder *flatbuffers.Builder, UserID flatbuffers.UOffsetT) {
 	builder.PrependUOffsetTSlot(0, flatbuffers.UOffsetT(UserID), 0)
 }
+
 func AccessProfileAddRegisterDate(builder *flatbuffers.Builder, RegisterDate flatbuffers.UOffsetT) {
 	builder.PrependUOffsetTSlot(1, flatbuffers.UOffsetT(RegisterDate), 0)
 }
+
 func AccessProfileAddExpiration(builder *flatbuffers.Builder, Expiration flatbuffers.UOffsetT) {
 	builder.PrependUOffsetTSlot(2, flatbuffers.UOffsetT(Expiration), 0)
 }
+
 func AccessProfileEnd(builder *flatbuffers.Builder) flatbuffers.UOffsetT {
 	return builder.EndObject()
 }

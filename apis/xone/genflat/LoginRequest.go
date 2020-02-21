@@ -107,15 +107,19 @@ func (rcv *LoginRequest) Password() []byte {
 func LoginRequestStart(builder *flatbuffers.Builder) {
 	builder.StartObject(3)
 }
+
 func LoginRequestAddMsgID(builder *flatbuffers.Builder, msgID int32) {
 	builder.PrependInt32Slot(0, msgID, 1)
 }
+
 func LoginRequestAddUsername(builder *flatbuffers.Builder, username flatbuffers.UOffsetT) {
 	builder.PrependUOffsetTSlot(1, flatbuffers.UOffsetT(username), 0)
 }
+
 func LoginRequestAddPassword(builder *flatbuffers.Builder, password flatbuffers.UOffsetT) {
 	builder.PrependUOffsetTSlot(2, flatbuffers.UOffsetT(password), 0)
 }
+
 func LoginRequestEnd(builder *flatbuffers.Builder) flatbuffers.UOffsetT {
 	return builder.EndObject()
 }
